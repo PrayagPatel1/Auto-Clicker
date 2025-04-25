@@ -9,6 +9,15 @@ from pynput.mouse import Controller, Button
 from tabulate import tabulate
 
 
+def clear() -> None:
+    """Clears the terminal
+    """
+    if os.name == "nt":
+        os.system('cls')
+    else:
+        os.system('clear')
+
+
 class Clicker:
     """A class that simulates an auto clicker
 
@@ -49,17 +58,16 @@ class Clicker:
             time.sleep(self.click_interval)
 
     def display_status(self) -> None:
-        os.system('cls')
         self.status_info["Status"] = self.status_info["Status"].astype(str)
-
+        clear()
         if self._clicking:
-            self.status_info.at[0, "Status"] = "Running"
+            self.status_info.at[0, "Status"] = "\x1b[1;32mRunning\x1b[0m"
         else:
-            self.status_info.at[0, "Status"] = "Stopped"
+            self.status_info.at[0, "Status"] = "\x1b[1;31mStopped\x1b[0m"
 
         self.status_info.at[0, "Total Clicks"] = self.click_count
 
-        print('\r' + str(tabulate(self.status_info, headers = 'keys', tablefmt = 'fancy_grid')), end='')
+        print('\r' + str(tabulate(self.status_info, headers = 'keys', tablefmt = 'fancy_grid')) + '\n', end='')
 
     def _on_press(self, key: KeyCode) -> None:
         """A central dispatcher for multiple keyboard related events.
@@ -68,15 +76,16 @@ class Clicker:
             self._clicking = not self._clicking
             self.display_status()
         elif key == self.QUIT_KEY:
-            print("\n")
-            print("\n\x1b[1;31mQuitting auto clicker ...", end='')
+            clear()
+            print("\n\x1b[1;31mQuitting auto clicker ...\x1b[0m", end='')
+            time.sleep(1)
             sys.exit(0)
 
     def run(self) -> None:
         """Runs the auto clicker application.
         """
         clicker_thread = threading.Thread(target=self._clicker)
-        clicker_thread.daemon = True
+        clicker_thread.daemon = True # Continuously runs in the background from the main thread.
         clicker_thread.start()
 
         with Listener(on_press=self._on_press) as listener:
