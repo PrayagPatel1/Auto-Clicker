@@ -1,3 +1,5 @@
+import sys
+
 from clicker import Clicker
 
 auto_clicker = Clicker('t')
@@ -32,6 +34,6 @@ def auto_clicker_menu(title: str, description: str) -> None:
     print(border_char["b_left"] + border_char["horizontal"] * box_width + border_char["b_right"])
 
 menu_title = "Auto Clicker Application"
-menu_description = "Press [T] to toggle the clicker on/off. With each toggle a status table will be displayed."
+menu_description = "Press [T] to toggle the clicker on/off. Press [Q] to quit."
 auto_clicker_menu(menu_title, menu_description)
 auto_clicker.run()

@@ -68,7 +68,8 @@ class Clicker:
             self._clicking = not self._clicking
             self.display_status()
         elif key == self.QUIT_KEY:
-            print("\nQuitting auto clicker ...")
+            print("\n")
+            print("\n\x1b[1;31mQuitting auto clicker ...", end='')
             sys.exit(0)
 
     def run(self) -> None:
