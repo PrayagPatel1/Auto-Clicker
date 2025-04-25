@@ -1,4 +1,3 @@
-import os
 import sys
 import threading
 import time
@@ -8,14 +7,7 @@ from pynput.keyboard import KeyCode, Listener
 from pynput.mouse import Controller, Button
 from tabulate import tabulate
 
-
-def clear() -> None:
-    """Clears the terminal
-    """
-    if os.name == "nt":
-        os.system('cls')
-    else:
-        os.system('clear')
+from util import clear_terminal, create_menu, color_text, get_window_title
 
 
 class Clicker:
@@ -42,7 +34,7 @@ class Clicker:
         self.click_count = 0
 
         # Defining status log
-        self.data = {"Target App": ["Chrome"],
+        self.data = {"Target App": [get_window_title()],
                 "Click Interval": [self.click_interval],
                 "Total Clicks": [self.click_count],
                 "Status": [self._clicking]}
@@ -59,11 +51,11 @@ class Clicker:
 
     def display_status(self) -> None:
         self.status_info["Status"] = self.status_info["Status"].astype(str)
-        clear()
+        clear_terminal()
         if self._clicking:
-            self.status_info.at[0, "Status"] = "\x1b[1;32mRunning\x1b[0m"
+            self.status_info.at[0, "Status"] = color_text("Running", "green")
         else:
-            self.status_info.at[0, "Status"] = "\x1b[1;31mStopped\x1b[0m"
+            self.status_info.at[0, "Status"] = color_text("Stopped", "red")
 
         self.status_info.at[0, "Total Clicks"] = self.click_count
 
@@ -76,9 +68,9 @@ class Clicker:
             self._clicking = not self._clicking
             self.display_status()
         elif key == self.QUIT_KEY:
-            clear()
-            print("\n\x1b[1;31mQuitting auto clicker ...\x1b[0m", end='')
-            time.sleep(1)
+            clear_terminal()
+            create_menu("Quitting Auto Clicker", "Thank you and have a great day")
+            time.sleep(0.5)
             sys.exit(0)
 
     def run(self) -> None:
