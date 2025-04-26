@@ -11,5 +11,12 @@ if __name__ == '__main__':
     menu_description = "Press [T] to toggle the clicker on/off. Press [Q] to quit."
     create_menu(menu_title, menu_description)
 
-    auto_clicker = Clicker('t')
-    auto_clicker.run()
+    while True:
+        try:
+            click_interval_input = float(input("Enter click interval in seconds, "
+                                               "press [Enter], and press [T] to start: "))
+            auto_clicker = Clicker('t', click_interval_input)
+            auto_clicker.run()
+            break
+        except ValueError:
+            print("Invalid input. PLease try again.")

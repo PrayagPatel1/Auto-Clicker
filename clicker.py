@@ -31,7 +31,7 @@ class Clicker:
     _data: dict[str, list[int]]
     _status_info: DataFrame
 
-    def __init__(self, toggle_key: str) -> None:
+    def __init__(self, toggle_key: str, click_interval: float) -> None:
         """Initializes the auto clicker.
         """
         # Defining mouse
@@ -39,7 +39,7 @@ class Clicker:
         self._clicking = False
         self.TOGGLE_KEY = KeyCode.from_char(toggle_key)
         self.QUIT_KEY = KeyCode.from_char('q')
-        self.click_interval = 0.5
+        self.click_interval = click_interval
         self.click_count = 0
 
         # Defining status log
