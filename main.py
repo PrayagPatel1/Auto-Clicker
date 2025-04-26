@@ -9,7 +9,7 @@ if __name__ == '__main__':
     print("\x1b[?25l", end='')
 
     #Create the menu and run the auto clicker application
-    menu_title = "Auto Clicker Application"
+    menu_title = "Terminal Auto Clicker Application"
     menu_description = "Press [T] to toggle the clicker on/off. Press [Q] to quit."
     create_menu(menu_title, menu_description)
     auto_clicker.run()

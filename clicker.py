@@ -3,6 +3,7 @@ import threading
 import time
 
 import pandas as pd
+from pandas.core.interchange.dataframe_protocol import DataFrame
 from pynput.keyboard import KeyCode, Listener
 from pynput.mouse import Controller, Button
 from tabulate import tabulate
@@ -17,10 +18,18 @@ class Clicker:
     mouse: a Controller object that defines a mouse
     TOGGLE_KEY: a KeyCode object that records the key being pressed to start
     the auto clicker.
+    QUIT_KEY: a KeyCode object that quits the application.
+    click_interval: the delay between each consecutive clicks.
+    click_count: the total number of clicks.
     """
     mouse: Controller
     TOGGLE_KEY: KeyCode
+    QUIT_KEY: KeyCode
     _clicking: bool
+    click_interval: float
+    click_count: int
+    _data: dict[str, list[int]]
+    _status_info: DataFrame
 
     def __init__(self, toggle_key: str) -> None:
         """Initializes the auto clicker.
@@ -34,11 +43,11 @@ class Clicker:
         self.click_count = 0
 
         # Defining status log
-        self.data = {"Target App": [get_window_title()],
+        self._data = {"Target App": [get_window_title()],
                 "Click Interval": [self.click_interval],
                 "Total Clicks": [self.click_count],
                 "Status": [self._clicking]}
-        self.status_info = pd.DataFrame(self.data)
+        self.status_info = pd.DataFrame(self._data)
 
     def _clicker(self) -> None:
         """Performs multiple left clicks at a speed of <self.click_count>.
