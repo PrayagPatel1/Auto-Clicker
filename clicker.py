@@ -8,7 +8,7 @@ from pynput.keyboard import KeyCode, Listener
 from pynput.mouse import Controller, Button
 from tabulate import tabulate
 
-from util import clear_terminal, create_menu, color_text, get_window_title
+from util import clear_terminal, create_menu, color_text, get_window_title, flush_input
 
 
 class Clicker:
@@ -80,6 +80,7 @@ class Clicker:
             clear_terminal()
             create_menu("Quitting Auto Clicker", "Thank you and have a great day")
             time.sleep(0.5)
+            flush_input()
             sys.exit(0)
 
     def run(self) -> None:

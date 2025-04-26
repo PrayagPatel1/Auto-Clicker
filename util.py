@@ -1,4 +1,5 @@
 import os
+import sys
 
 import win32gui
 
@@ -85,3 +86,18 @@ def get_window_title() -> str:
         return win32gui.GetWindowText(window)
     except Exception:
         return "Unknown"
+
+def flush_input() -> None:
+    """
+        Clears the pynput keyboard buffer.
+
+        Returns:
+            None
+    """
+    try:
+        import msvcrt as ms
+        while ms.kbhit():
+            ms.getch()
+    except ImportError:
+        import termios
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
